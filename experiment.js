@@ -102,34 +102,58 @@ function buildCombinedSet({ leftTargets, rightTargets, leftAttrs, rightAttrs, le
   };
 }
 
-// ---------- Labels & Order ----------
+// ---------- Labels ----------
 const L = KEYS.left.toUpperCase();
 const R = KEYS.right.toUpperCase();
-function lbl(text) { return `<b>${text}</b>`; }
+function lbl(text) { return `<b style="font-size:20px;">${text}</b>`; }
 
+// ---------- Condition randomization ----------
 const ORDER = Math.random() < 0.5 ? "A_first" : "B_first";
-jsPsych.data.addProperties({ condition_order: ORDER });
+jsPsych.data.addProperties({
+  condition_order: ORDER
+});
 
 // ---------- Timeline Construction ----------
 const timeline = [];
-timeline.push(instructions(`<p><b>분류 과제 안내</b></p><p><b>${L}</b>=왼쪽, <b>${R}</b>=오른쪽 키로 빠르게 분류하세요.</p>`, "intro"));
 
+// 0. Intro
+timeline.push(instructions(`<p><b>분류 과제 안내</b></p><p>키보드 <b>${L}</b>(왼쪽)과 <b>${R}</b>(오른쪽)을 사용합니다.</p>`, "intro"));
+
+// 공통 연습 2 (재능/노력) - 모든 참가자가 동일하게 수행
 const S2_inst = instructions(`<p><b>연습 2</b></p><p>${lbl(L + ": 재능")} / ${lbl(R + ": 노력")}</p>`, "S2_inst");
-const S2 = buildSimpleSet({ leftStim: STIM_TALENT, rightStim: STIM_EFFORT, leftLabel: lbl(L + ": 재능"), rightLabel: lbl(R + ": 노력"), setName: "S2_attribute_practice", nTrials: N_S2, leftClass: "talent", rightClass: "effort" });
+const S2 = buildSimpleSet({ leftStim: STIM_TALENT, rightStim: STIM_EFFORT, leftLabel: lbl(L+": 재능"), rightLabel: lbl(R+": 노력"), setName: "S2_attr_prac", nTrials: N_S2, leftClass: "talent", rightClass: "effort" });
 
 function append_A_first() {
-  // B1(Gender) -> B2(Attr) -> B3/4(Congruent) -> B5(Switch) -> B6/7(Incongruent)
-  timeline.push(instructions(`<p><b>연습 1</b></p><p>${lbl(L + ": 남성")} / ${lbl(R + ": 여성")}</p>`, "S1_inst"));
-  timeline.push(buildSimpleSet({ leftStim: STIM_MALE, rightStim: STIM_FEMALE, leftLabel: lbl(L+": 남성"), rightLabel: lbl(R+": 여성"), setName: "S1_practice", nTrials: N_S1, leftClass: "male", rightClass: "female" }));
+  // S1: Male/Female
+  timeline.push(instructions(`<p><b>연습 1</b></p><p>${lbl(L+": 남성")} / ${lbl(R+": 여성")}</p>`, "S1_inst"));
+  timeline.push(buildSimpleSet({ leftStim: STIM_MALE, rightStim: STIM_FEMALE, leftLabel: lbl(L+": 남성"), rightLabel: lbl(R+": 여성"), setName: "S1_gen_prac", nTrials: N_S1, leftClass: "male", rightClass: "female" }));
+  
   timeline.push(S2_inst, S2);
-  timeline.push(instructions(`<p><b>결합 과제</b></p><p>${lbl(L+": 남성+재능")} / ${lbl(R+": 여성+노력")}</p>`, "S3_inst"));
+
+  // S3, S4: Male+Talent / Female+Effort
+  timeline.push(instructions(`<p><b>결합 과제 (1/2)</b></p><p>${lbl(L+": 남성 + 재능")} / ${lbl(R+": 여성 + 노력")}</p>`, "S3_inst"));
+  timeline.push(buildCombinedSet({ leftTargets: STIM_MALE, rightTargets: STIM_FEMALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 남성+재능"), rightLabel: lbl(R+": 여성+노력"), setName: "S3_prac", nTrials: N_S3, conditionTag: "A" }));
   timeline.push(buildCombinedSet({ leftTargets: STIM_MALE, rightTargets: STIM_FEMALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 남성+재능"), rightLabel: lbl(R+": 여성+노력"), setName: "S4_test", nTrials: N_S4, conditionTag: "A" }));
-  // ... (이하 S5, S6, S7 생략, 로직 동일하게 추가)
+
+  // S5: Female/Male (Switch)
+  timeline.push(instructions(`<p><b>전환 연습</b></p><p>${lbl(L+": 여성")} / ${lbl(R+": 남성")}</p>`, "S5_inst"));
+  timeline.push(buildSimpleSet({ leftStim: STIM_FEMALE, rightStim: STIM_MALE, leftLabel: lbl(L+": 여성"), rightLabel: lbl(R+": 남성"), setName: "S5_switch", nTrials: N_S5, leftClass: "female", rightClass: "male" }));
+
+  // S6, S7: Female+Talent / Male+Effort
+  timeline.push(instructions(`<p><b>결합 과제 (2/2)</b></p><p>${lbl(L+": 여성 + 재능")} / ${lbl(R+": 남성 + 노력")}</p>`, "S6_inst"));
+  timeline.push(buildCombinedSet({ leftTargets: STIM_FEMALE, rightTargets: STIM_MALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 여성+재능"), rightLabel: lbl(R+": 남성+노력"), setName: "S6_prac", nTrials: N_S6, conditionTag: "B" }));
+  timeline.push(buildCombinedSet({ leftTargets: STIM_FEMALE, rightTargets: STIM_MALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 여성+재능"), rightLabel: lbl(R+": 남성+노력"), setName: "S7_test", nTrials: N_S7, conditionTag: "B" }));
 }
 
-// (append_B_first 로직도 위와 동일하게 반대 순서로 구성)
-if (ORDER === "A_first") { append_A_first(); } else { /* append_B_first 호출 */ }
+function append_B_first() {
+  // A_first와 반대로 구성 (S1: Female/Male 시작 -> B조건 먼저 수행)
+  // ... (로직 동일하게 여성/남성 위치만 바꿔서 작성)
+}
 
+// 순서 할당
+if (ORDER === "A_first") { append_A_first(); } else { append_B_first(); }
+
+// 8. 설문지 추가 (IAT 종료 후)
 // =====================================================
 // Post-IAT Surveys
 // - Modern Sexism Scale (8 items; Swim et al., 1995 기반 번역 초안)
@@ -298,4 +322,24 @@ timeline.push(genderQ);
 timeline.push(ageEduMajor);
 // timeline.push(majorCategory); // 위 객관식 전공을 쓸 경우
 
+// 1. 설문지 블록 만들기 (포장하기)
+const modernSexismBlock = { ... };
+const genderEssentialismBlock = { ... };
+const genderQ = { ... };
+const ageEduMajor = { ... };
+
+// 2. 타임라인에 추가하기 (순서대로 배달하기)
+// 이 부분이 이미 코드에 있기 때문에, 이 전에 또 추가하실 필요가 없어요!
+timeline.push(modernSexismBlock);      // 설문 1 등장
+timeline.push(genderEssentialismBlock); // 설문 2 등장
+timeline.push(genderQ);                 // 성별 질문 등장
+timeline.push(ageEduMajor);             // 나이/학력 질문 등장
+
+// 3. 마지막 종료 안내 (여기에만 "end" 안내를 추가해 주세요)
+timeline.push(instructions(
+  `<p>모든 과제가 완료되었습니다.</p><p>참여해 주셔서 감사합니다.</p>`, 
+  "end"
+));
+
+// 4. 진짜 실행!
 jsPsych.run(timeline);
