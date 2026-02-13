@@ -51,9 +51,10 @@ function makeTrial({ stimulus, correct_response, left_label, right_label, block,
         <div>${left_label}</div>
         <div>${right_label}</div>
       </div>
-      <div style="margin-top:70px;font-size:42px;text-align:center;">${stimulus}</div>
+      <div class="iat-stimulus" style="margin-top:70px;font-size:42px;text-align:center;">${stimulus}</div>
     `,
     choices: [KEYS.left, KEYS.right],
+    post_trial_gap: 150, // 이 부분이 0.15초의 빈 화면(ISI)을 만듭니다
     data: {
       task: "IAT",
       block,
