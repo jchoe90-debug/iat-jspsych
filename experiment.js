@@ -116,99 +116,88 @@ jsPsych.data.addProperties({
 // ---------- Timeline Construction ----------
 const timeline = [];
 
-// ── 연구 안내 및 동의서 ─────────────────────────────────────────
+// ── 연구 안내 및 동의서 (1페이지 통합) ─────────────────────────────────────────
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="max-width:820px;margin:20px auto;font-size:18px;line-height:1.7;text-align:left;">
+      <h2 style="text-align:center;font-size:20px;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:20px;">
+        연구 참여자 안내문 및 동의서
+      </h2>
 
-// 동의서 (1/3): 참여 권유 · 연구 목적 · 기간 · 선정기준
-timeline.push(instructions(`
-  <div style="text-align:left;overflow-y:auto;max-height:80vh;">
-    <h2 style="text-align:center;font-size:20px;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:20px;">
-      연구 참여자 안내문 및 동의서
-    </h2>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">1. 참여 권유</h3>
+      <p style="margin:0 0 10px;">본 연구는 한국 사회의 다양한 특성에 대한 인식 패턴과 평가 경향을 조사하는 것을 목표로 하는 연구입니다. 귀하는 본 연구에 참여할 것인지 여부를 결정하기 전에, 설명서와 동의서를 신중하게 읽어보셔야 합니다. 이 연구가 왜 수행되며, 무엇을 수행하는지 귀하가 이해하는 것이 중요합니다. 이 연구는 자발적으로 참여 의사를 밝히신 분에 한하여 수행될 것입니다. 다음 내용을 신중히 읽어보신 후 참여 의사를 밝혀 주시길 바랍니다.</p>
+      <p style="border-left:4px solid #1a237e;padding:8px 12px;background:#f0f4ff;margin:0 0 10px;">다음 섹션으로 넘어가 설문을 진행하는 것은 귀하가 본 연구에 대해 그리고 위험성에 대해 설명을 들었음을 의미하며, 귀하께서 자신(또는 법정대리인)이 본 연구에 참가를 원한다는 것을 의미합니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">1. 참여 권유</h3>
-    <p style="margin:0 0 10px;">본 연구는 한국 사회의 다양한 특성에 대한 인식 패턴과 평가 경향을 조사하는 것을 목표로 하는 연구입니다. 귀하는 본 연구에 참여할 것인지 여부를 결정하기 전에, 설명서와 동의서를 신중하게 읽어보셔야 합니다. 이 연구가 왜 수행되며, 무엇을 수행하는지 귀하가 이해하는 것이 중요합니다. 이 연구는 자발적으로 참여 의사를 밝히신 분에 한하여 수행될 것입니다. 다음 내용을 신중히 읽어보신 후 참여 의사를 밝혀 주시길 바랍니다.</p>
-    <p style="border-left:4px solid #1a237e;padding:8px 12px;background:#f0f4ff;margin:0 0 10px;">다음 섹션으로 넘어가 설문을 진행하는 것은 귀하가 본 연구에 대해 그리고 위험성에 대해 설명을 들었음을 의미하며, 귀하께서 자신(또는 법정대리인)이 본 연구에 참가를 원한다는 것을 의미합니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">2. 연구의 목적 및 배경</h3>
+      <p style="margin:0 0 10px;">본 연구의 목적은 한국 사회의 다양한 특성에 대한 인식 패턴과 평가 경향을 탐색하는 것입니다. 이를 통해 현대 한국인의 사회적 판단 과정과 인지적 연합구조를 이해하고, 이러한 이해를 바탕으로 효과적인 의사소통과 사회적 제도 등을 발전시키는 데 기여하고자 합니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">2. 연구의 목적 및 배경</h3>
-    <p style="margin:0 0 10px;">본 연구의 목적은 한국 사회의 다양한 특성에 대한 인식 패턴과 평가 경향을 탐색하는 것입니다. 이를 통해 현대 한국인의 사회적 판단 과정과 인지적 연합구조를 이해하고, 이러한 이해를 바탕으로 효과적인 의사소통과 사회적 제도 등을 발전시키는 데 기여하고자 합니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">3. 예상 참여기간 및 연구대상자 수</h3>
+      <ul style="margin:0 0 10px;padding-left:20px;">
+        <li>해당 연구는 생명윤리위원회 승인일로부터 2026년 8월 31일까지 진행됩니다.</li>
+        <li>해당 기간 내에 200명의 참여자를 모집할 계획입니다.</li>
+      </ul>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">3. 예상 참여기간 및 연구대상자 수</h3>
-    <ul style="margin:0 0 10px;padding-left:20px;">
-      <li>해당 연구는 생명윤리위원회 승인일로부터 2026년 8월 31일까지 진행됩니다.</li>
-      <li>해당 기간 내에 200명의 참여자를 모집할 계획입니다.</li>
-    </ul>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">4. 연구대상자 선정기준</h3>
+      <p style="margin:0 0 10px;">한국어에 능통하며 사전 동의를 제공할 수 있는, 만 19세 이상의 성인이라면 연구에 참여할 수 있습니다. 인지적 또는 신체적 제약으로 인하여 암묵적 연합 검사를 완료할 수 없는 경우에는 모집에서 제외될 수 있습니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">4. 연구대상자 선정기준</h3>
-    <p style="margin:0 0 10px;">한국어에 능통하며 사전 동의를 제공할 수 있는, 만 19세 이상의 성인이라면 연구에 참여할 수 있습니다. 인지적 또는 신체적 제약으로 인하여 암묵적 연합 검사를 완료할 수 없는 경우에는 모집에서 제외될 수 있습니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">5. 연구 참여 절차</h3>
+      <p style="margin:0 0 10px;">참여에 동의하신다면 다음 섹션으로 넘어가 설문을 진행하게 됩니다. 설문이 시작되면 지침에 따라 키보드로 신호를 입력하여 단서들을 매칭하게 될 것입니다. 소요 시간은 약 30~40분 내외로 예상됩니다. 연구 참여가 모두 완료되면 데이터는 즉시 회수되며 자료는 모두 익명으로 처리됩니다.</p>
 
-    <p style="text-align:center;color:#888;font-size:15px;margin-top:24px;">(1 / 3) &nbsp; 스페이스바를 눌러 계속하세요</p>
-  </div>
-`, "consent_p1"));
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">6. 귀하가 준수해야 하는 사항</h3>
+      <p style="margin:0 0 10px;">귀하는 언제든지 어떠한 불이익 없이 참여 도중에 그만둘 수 있습니다. 만일 중단을 원하시는 경우 웹페이지를 닫아주시면 됩니다.</p>
 
-// 동의서 (2/3): 절차 · 준수사항 · 위험 · 이익 · 보상
-timeline.push(instructions(`
-  <div style="text-align:left;overflow-y:auto;max-height:80vh;">
-    <h2 style="text-align:center;font-size:20px;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:20px;">
-      연구 참여자 안내문 및 동의서
-    </h2>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">7. 예상되는 위험 및 불편사항</h3>
+      <p style="margin:0 0 10px;">본 연구에는 심리적, 신체적으로 참여자들에게 직접적으로 해를 가하는 요소는 없습니다. 하지만 연구에 참여하는 도중 지침에 따라 키보드를 입력하는 행위 등에 다소의 피로감을 느낄 수 있습니다. 이로 인해 더 이상 연구에 참여하지 못하겠다고 느끼는 경우, 귀하는 언제든지 연구 참여를 중단할 수 있습니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">5. 연구 참여 절차</h3>
-    <p style="margin:0 0 10px;">참여에 동의하신다면 다음 섹션으로 넘어가 설문을 진행하게 됩니다. 설문이 시작되면 지침에 따라 키보드로 신호를 입력하여 단서들을 매칭하게 될 것입니다. 소요 시간은 약 30~40분 내외로 예상됩니다. 연구 참여가 모두 완료되면 데이터는 즉시 회수되며 자료는 모두 익명으로 처리됩니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">8. 연구 참여의 기대 이익</h3>
+      <p style="margin:0 0 10px;">귀하가 이 연구에 참여하는데 있어서 직접적인 이득은 없습니다. 그러나 귀하가 제공하는 정보는 한국 사회에 대한 이해를 증진하는데 도움이 될 것입니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">6. 귀하가 준수해야 하는 사항</h3>
-    <p style="margin:0 0 10px;">귀하는 언제든지 어떠한 불이익 없이 참여 도중에 그만둘 수 있습니다. 만일 중단을 원하시는 경우 웹페이지를 닫아주시면 됩니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">9. 연구 참여에 따른 보상</h3>
+      <p style="margin:0 0 10px;">이 연구에 참여해 주시는 경우 귀하께 <b>4천원 상당의 기프티콘</b>이 지급될 예정입니다. 단, 설문을 도중에 종료하시거나 개인식별정보(이름, 연락처)를 입력하지 않으신 경우 보상이 지급되지 않습니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">7. 예상되는 위험 및 불편사항</h3>
-    <p style="margin:0 0 10px;">본 연구에는 심리적, 신체적으로 참여자들에게 직접적으로 해를 가하는 요소는 없습니다. 하지만 연구에 참여하는 도중 지침에 따라 키보드를 입력하는 행위 등에 다소의 피로감을 느낄 수 있습니다. 이로 인해 더 이상 연구에 참여하지 못하겠다고 느끼는 경우, 귀하는 언제든지 연구 참여를 중단할 수 있습니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">10. 동의 및 철회 절차</h3>
+      <p style="margin:0 0 10px;">귀하는 이 연구에 참여에 동의하지 않더라도 불이익을 받지 않으며 참여해야 할 의무는 없습니다. 또한 연구참여에 동의한 경우라도 자유의사에 의하여 언제든지 이를 철회할 수 있습니다. 귀하가 이 연구에 참여를 중단하길 원하면 언제나 참여를 철회할 수 있고 그 어떠한 불이익이 없을 것입니다.</p>
+      <p style="margin:0 0 10px;">만약 귀하가 연구 참여 동의를 철회하는 경우, 연구책임자 <b>최지영(010-5221-3942)</b>에게 연락하여 주십시오. 철회 시 귀하에게 수집된 모든 데이터는 즉시 파기됩니다. 단, 설문을 완료하였으나 개인식별정보를 입력하지 않으신 경우 데이터 삭제가 어려울 수 있습니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">8. 연구 참여의 기대 이익</h3>
-    <p style="margin:0 0 10px;">귀하가 이 연구에 참여하는데 있어서 직접적인 이득은 없습니다. 그러나 귀하가 제공하는 정보는 한국 사회에 대한 이해를 증진하는데 도움이 될 것입니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">11. 개인정보 수집 및 보호</h3>
+      <p style="margin:0 0 10px;">본 연구에서 수집하는 개인식별정보는 이름과 연락처입니다. 수집된 개인식별정보는 잠금장치가 있는 USB에 보관되며 연구책임자 최지영만이 접근할 수 있습니다. 수집된 개인식별정보는 연구 참여에 대한 보상 지급 목적으로만 사용됩니다. 연구관련 자료는 「생명윤리 및 안전에 관한 법률」 시행규칙 제15조에 따라 연구종료 후 3년간 보관 후 파기됩니다. 귀하의 신상을 파악할 수 있는 기록은 연구 결과 출판 시에도 비밀로 보호됩니다.</p>
 
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">9. 연구 참여에 따른 보상</h3>
-    <p style="margin:0 0 10px;">이 연구에 참여해 주시는 경우 귀하께 <b>4천원 상당의 기프티콘</b>이 지급될 예정입니다. 단, 설문을 도중에 종료하시거나 개인식별정보(이름, 연락처)를 입력하지 않으신 경우 보상이 지급되지 않습니다.</p>
+      <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">12. 문의처</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:16px;margin-bottom:8px;">
+        <tr style="background:#f0f4ff;">
+          <td style="padding:8px 12px;border:1px solid #ccc;"><b>연구책임자</b></td>
+          <td style="padding:8px 12px;border:1px solid #ccc;">최지영</td>
+          <td style="padding:8px 12px;border:1px solid #ccc;"><b>연락처</b></td>
+          <td style="padding:8px 12px;border:1px solid #ccc;">010-5221-3942</td>
+        </tr>
+        <tr>
+          <td colspan="4" style="padding:8px 12px;border:1px solid #ccc;">
+            <b>이화여자대학교 생명윤리위원회(IRB)</b> &nbsp;|&nbsp; TEL: 02-3277-7154 &nbsp;|&nbsp; irb@ewha.ac.kr
+          </td>
+        </tr>
+      </table>
 
-    <p style="text-align:center;color:#888;font-size:15px;margin-top:24px;">(2 / 3) &nbsp; 스페이스바를 눌러 계속하세요</p>
-  </div>
-`, "consent_p2"));
-
-// 동의서 (3/3): 동의 철회 · 개인정보 · 문의 · 최종 동의
-timeline.push(instructions(`
-  <div style="text-align:left;overflow-y:auto;max-height:80vh;">
-    <h2 style="text-align:center;font-size:20px;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:20px;">
-      연구 참여자 안내문 및 동의서
-    </h2>
-
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">10. 동의 및 철회 절차</h3>
-    <p style="margin:0 0 10px;">귀하는 이 연구에 참여에 동의하지 않더라도 불이익을 받지 않으며 참여해야 할 의무는 없습니다. 또한 연구참여에 동의한 경우라도 자유의사에 의하여 언제든지 이를 철회할 수 있습니다. 귀하가 이 연구에 참여를 중단하길 원하면 언제나 참여를 철회할 수 있고 그 어떠한 불이익이 없을 것입니다.</p>
-    <p style="margin:0 0 10px;">만약 귀하가 연구 참여 동의를 철회하는 경우, 연구책임자 <b>최지영(010-5221-3942)</b>에게 연락하여 주십시오. 철회 시 귀하에게 수집된 모든 데이터는 즉시 파기됩니다. 단, 설문을 완료하였으나 개인식별정보를 입력하지 않으신 경우 데이터 삭제가 어려울 수 있습니다.</p>
-
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">11. 개인정보 수집 및 보호</h3>
-    <p style="margin:0 0 10px;">본 연구에서 수집하는 개인식별정보는 이름과 연락처입니다. 수집된 개인식별정보는 잠금장치가 있는 USB에 보관되며 연구책임자 최지영만이 접근할 수 있습니다. 수집된 개인식별정보는 연구 참여에 대한 보상 지급 목적으로만 사용됩니다. 연구관련 자료는 「생명윤리 및 안전에 관한 법률」 시행규칙 제15조에 따라 연구종료 후 3년간 보관 후 파기됩니다. 귀하의 신상을 파악할 수 있는 기록은 연구 결과 출판 시에도 비밀로 보호됩니다.</p>
-
-    <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">12. 문의처</h3>
-    <table style="width:100%;border-collapse:collapse;font-size:16px;margin-bottom:8px;">
-      <tr style="background:#f0f4ff;">
-        <td style="padding:8px 12px;border:1px solid #ccc;"><b>연구책임자</b></td>
-        <td style="padding:8px 12px;border:1px solid #ccc;">최지영</td>
-        <td style="padding:8px 12px;border:1px solid #ccc;"><b>연락처</b></td>
-        <td style="padding:8px 12px;border:1px solid #ccc;">010-5221-3942</td>
-      </tr>
-      <tr>
-        <td colspan="4" style="padding:8px 12px;border:1px solid #ccc;">
-          <b>이화여자대학교 생명윤리위원회(IRB)</b> &nbsp;|&nbsp; TEL: 02-3277-7154 &nbsp;|&nbsp; irb@ewha.ac.kr
-        </td>
-      </tr>
-    </table>
-
-    <div style="border:2px solid #1a237e;border-radius:6px;padding:14px 18px;margin-top:20px;background:#f0f4ff;text-align:center;">
-      <p style="margin:0;font-weight:bold;font-size:17px;">위 내용을 모두 읽었으며, 본 연구에 자발적으로 참여하는 것에 동의합니다.</p>
-      <p style="margin:8px 0 0;color:#555;font-size:15px;">(3 / 3) &nbsp; 스페이스바를 누르면 동의하고 연구를 시작합니다.</p>
+      <div style="border:2px solid #1a237e;border-radius:6px;padding:14px 18px;margin-top:20px;background:#f0f4ff;text-align:center;">
+        <p style="margin:0;font-weight:bold;font-size:17px;">위 내용을 모두 읽었으며, 본 연구에 자발적으로 참여하는 것에 동의합니다.</p>
+      </div>
     </div>
-  </div>
-`, "consent_p3"));
+  `,
+  choices: ["동의하고 시작하기"],
+  button_html: `<button class="jspsych-btn" style="font-size:18px;padding:14px 48px;background:#1a237e;color:white;border:none;border-radius:6px;cursor:pointer;margin:24px auto;display:block;">%choice%</button>`,
+  data: { task: "instructions", name: "consent" }
+});
 
 // 0. Intro
-timeline.push(instructions(`<p><b>분류 과제 안내</b></p><p>키보드 <b>${L}</b>(왼쪽)과 <b>${R}</b>(오른쪽)을 사용합니다.</p>`, "intro"));
+timeline.push(instructions(`
+  <p><b>분류 과제 안내</b></p>
+  <p>키보드 <b>${L}</b>(왼쪽)과 <b>${R}</b>(오른쪽)을 사용합니다.</p>
+  <div style="position:fixed;bottom:40px;left:0;right:0;text-align:center;">
+    <span style="font-size:20px;font-weight:bold;color:#1a237e;background:#e8eaf6;padding:12px 32px;border-radius:8px;border:2px solid #1a237e;letter-spacing:0.5px;">
+      ▼ &nbsp; 스페이스바를 눌러 시작하세요 &nbsp; ▼
+    </span>
+  </div>
+`, "intro"));
 
 // 공통 연습 2 (재능/노력) - 모든 참가자가 동일하게 수행
 const S2_inst = instructions(`<p><b>연습 2</b></p><p>${lbl(L + ": 재능")} / ${lbl(R + ": 노력")}</p>`, "S2_inst");
