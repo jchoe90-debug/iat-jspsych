@@ -5,10 +5,25 @@
 // =====================================================
 
 // ---------- jsPsych init ----------
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwuCzFEG_PBGmBBk2FNDP0IxWA8H8bzk4Xg0-k5AVuVHuSWe7PuKi7h6mUyG3fnnAHA/exec";
+
 const jsPsych = initJsPsych({
   on_finish: () => {
-    // 개발 단계 확인용 (배포 시 삭제 가능)
-    jsPsych.data.displayData("json");
+    const allData = jsPsych.data.get().values();
+    fetch(GOOGLE_SHEET_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(allData)
+    })
+      .then(res => res.text())
+      .then(text => {
+        console.log("데이터 전송 완료:", text);
+        jsPsych.data.displayData("json");
+      })
+      .catch(err => {
+        console.error("데이터 전송 실패:", err);
+        jsPsych.data.displayData("json");
+      });
   }
 });
 
