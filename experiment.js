@@ -40,7 +40,14 @@ const N_S5 = 20; const N_S6 = 20; const N_S7 = 56;
 function instructions(html, name) {
   return {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: `<div style="max-width:820px;margin:40px auto;font-size:18px;line-height:1.7;">${html}</div>`,
+    stimulus: `
+      <div style="max-width:820px;margin:40px auto;font-size:18px;line-height:1.7;">${html}</div>
+      <div style="position:fixed;bottom:40px;left:0;right:0;text-align:center;">
+        <span style="font-size:20px;font-weight:bold;color:#1a237e;background:#e8eaf6;padding:12px 32px;border-radius:8px;border:2px solid #1a237e;letter-spacing:0.5px;">
+          ▼ &nbsp; 스페이스바를 눌러 시작하세요 &nbsp; ▼
+        </span>
+      </div>
+    `,
     choices: [" "],
     data: { task: "instructions", name }
   };
@@ -209,11 +216,6 @@ timeline.push({
 timeline.push(instructions(`
   <p><b>분류 과제 안내</b></p>
   <p>키보드 <b>${L}</b>(왼쪽)과 <b>${R}</b>(오른쪽)을 사용합니다.</p>
-  <div style="position:fixed;bottom:40px;left:0;right:0;text-align:center;">
-    <span style="font-size:20px;font-weight:bold;color:#1a237e;background:#e8eaf6;padding:12px 32px;border-radius:8px;border:2px solid #1a237e;letter-spacing:0.5px;">
-      ▼ &nbsp; 스페이스바를 눌러 시작하세요 &nbsp; ▼
-    </span>
-  </div>
 `, "intro"));
 
 // 공통 연습 2 (재능/노력) - 모든 참가자가 동일하게 수행
