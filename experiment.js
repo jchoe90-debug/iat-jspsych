@@ -54,35 +54,53 @@ function instructions(html, name) {
 }
 
 function makeTrial({ stimulus, correct_response, left_label, right_label, setName, stim_class }) {
-  return {
+  const stimHtml = (showX) => `
+    <div style="display:flex;justify-content:space-between;font-size:18px;margin:10px 20px;">
+      <div>${left_label}</div>
+      <div>${right_label}</div>
+    </div>
+    <div class="iat-stimulus" style="margin-top:70px;font-size:42px;text-align:center;">${stimulus}</div>
+    ${showX ? '<div style="font-size:56px;color:#b00020;text-align:center;margin-top:10px;">X</div>' : ''}
+  `;
+
+  // 1차 시도: 자극 표시, E/I 모두 수용
+  const initialTrial = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-      <div style="display:flex;justify-content:space-between;font-size:18px;margin:10px 20px;">
-        <div>${left_label}</div>
-        <div>${right_label}</div>
-      </div>
-      <div class="iat-stimulus" style="margin-top:70px;font-size:42px;text-align:center;">${stimulus}</div>
-    `,
+    stimulus: stimHtml(false),
     choices: [KEYS.left, KEYS.right],
-    post_trial_gap: 150, // 깜빡임 효과를 위한 간격
+    // 정반응이면 150ms ITI, 오답이면 즉시 X 표시
+    post_trial_gap: () => {
+      const last = jsPsych.data.get().last(1).values()[0];
+      return last && last.correct ? 150 : 0;
+    },
     data: { task: "IAT", set: setName, stimulus, stim_class, correct_response },
-    on_finish: (data) => { data.correct = data.response === correct_response; }
+    on_finish: (data) => {
+      data.correct = data.response === correct_response;
+      data.rt_initial = data.rt; // 초기 반응시간 보존
+    }
   };
-}
 
-const errorFeedback = {
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: `<div style="font-size:56px;color:#b00020;">X</div>`,
-  choices: "NO_KEYS",
-  trial_duration: 250
-};
+  // 오류 교정: X와 함께 자극 재표시, 정답 키만 수용
+  const errorCorrectionTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: stimHtml(true),
+    choices: [correct_response], // 정답 키만 허용
+    post_trial_gap: 150,
+    data: { task: "IAT_error_correction" },
+    on_finish: (data) => {
+      // 직전 IAT 시도의 rt를 총 반응시간(자극 시작 ~ 정답 입력)으로 업데이트
+      const lastIAT = jsPsych.data.get().filter({ task: "IAT" }).last(1).values()[0];
+      if (lastIAT) {
+        lastIAT.rt = lastIAT.rt_initial + data.rt;
+      }
+    }
+  };
 
-function withErrorFeedback(trial) {
   return {
     timeline: [
-      trial,
+      initialTrial,
       {
-        timeline: [errorFeedback],
+        timeline: [errorCorrectionTrial],
         conditional_function: () => {
           const last = jsPsych.data.get().last(1).values()[0];
           return last && last.correct === false;
@@ -102,9 +120,9 @@ function buildSimpleSet({ leftStim, rightStim, leftLabel, rightLabel, setName, n
   const trials_data = jsPsych.randomization.repeat(pool, Math.ceil(nTrials / pool.length)).slice(0, nTrials);
   
   return {
-    timeline: trials_data.map(item => withErrorFeedback(
+    timeline: trials_data.map(item =>
       makeTrial({ stimulus: item.s, correct_response: item.key, left_label: leftLabel, right_label: rightLabel, setName, stim_class: item.cls })
-    ))
+    )
   };
 }
 
@@ -119,8 +137,8 @@ function buildCombinedSet({ leftTargets, rightTargets, leftAttrs, rightAttrs, le
 
   return {
     timeline: trials_data.map(item => {
-      const t = withErrorFeedback(makeTrial({ stimulus: item.s, correct_response: item.key, left_label: leftLabel, right_label: rightLabel, setName, stim_class: item.cls }));
-      t.timeline[0].data.condition = conditionTag; // 데이터 분석용 태그
+      const t = makeTrial({ stimulus: item.s, correct_response: item.key, left_label: leftLabel, right_label: rightLabel, setName, stim_class: item.cls });
+      t.timeline[0].data.condition = conditionTag; // 데이터 분석용 태그 (initialTrial.data에 저장)
       return t;
     })
   };
