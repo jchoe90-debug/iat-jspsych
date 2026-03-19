@@ -236,51 +236,71 @@ timeline.push(instructions(`
   <p>키보드 <b>${L}</b>(왼쪽)과 <b>${R}</b>(오른쪽)을 사용합니다.</p>
 `, "intro"));
 
-// 공통 연습 2 (재능/노력) - 모든 참가자가 동일하게 수행
-const S2_inst = instructions(`<p><b>연습 2</b></p><p>${lbl(L + ": 재능")} / ${lbl(R + ": 노력")}</p>`, "S2_inst");
+// 공통 연습 2 (재능/노력) - 세트 번호는 각 조건 함수 안에서 push
 const S2 = buildSimpleSet({ leftStim: STIM_TALENT, rightStim: STIM_EFFORT, leftLabel: lbl(L+": 재능"), rightLabel: lbl(R+": 노력"), setName: "S2_attr_prac", nTrials: N_S2, leftClass: "talent", rightClass: "effort" });
 
-function append_A_first() {
-  // S1: Male/Female
-  timeline.push(instructions(`<p><b>연습 1</b></p><p>${lbl(L+": 남성")} / ${lbl(R+": 여성")}</p>`, "S1_inst"));
-  timeline.push(buildSimpleSet({ leftStim: STIM_MALE, rightStim: STIM_FEMALE, leftLabel: lbl(L+": 남성"), rightLabel: lbl(R+": 여성"), setName: "S1_gen_prac", nTrials: N_S1, leftClass: "male", rightClass: "female" }));
-  
-  timeline.push(S2_inst, S2);
+// 진행상황 표시 헬퍼
+function progress(n) {
+  return `<p style="font-size:15px;color:#888;margin:0 0 6px;">(${n} / 7세트)</p>`;
+}
 
-  // S3, S4: Male+Talent / Female+Effort
-  timeline.push(instructions(`<p><b>결합 과제 (1/2)</b></p><p>${lbl(L+": 남성 + 재능")} / ${lbl(R+": 여성 + 노력")}</p>`, "S3_inst"));
+function append_A_first() {
+  // 1세트: Male/Female
+  timeline.push(instructions(`${progress(1)}<p><b>1세트</b></p><p>${lbl(L+": 남성")} / ${lbl(R+": 여성")}</p>`, "S1_inst"));
+  timeline.push(buildSimpleSet({ leftStim: STIM_MALE, rightStim: STIM_FEMALE, leftLabel: lbl(L+": 남성"), rightLabel: lbl(R+": 여성"), setName: "S1_gen_prac", nTrials: N_S1, leftClass: "male", rightClass: "female" }));
+
+  // 2세트: Talent/Effort
+  timeline.push(instructions(`${progress(2)}<p><b>2세트</b></p><p>${lbl(L+": 재능")} / ${lbl(R+": 노력")}</p>`, "S2_inst"));
+  timeline.push(S2);
+
+  // 3세트: Male+Talent / Female+Effort (연습)
+  timeline.push(instructions(`${progress(3)}<p><b>3세트</b></p><p>${lbl(L+": 남성 + 재능")} / ${lbl(R+": 여성 + 노력")}</p>`, "S3_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_MALE, rightTargets: STIM_FEMALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 남성+재능"), rightLabel: lbl(R+": 여성+노력"), setName: "S3_prac", nTrials: N_S3, conditionTag: "A" }));
+
+  // 4세트: Male+Talent / Female+Effort (본 과제)
+  timeline.push(instructions(`${progress(4)}<p><b>4세트</b></p><p>${lbl(L+": 남성 + 재능")} / ${lbl(R+": 여성 + 노력")}</p>`, "S4_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_MALE, rightTargets: STIM_FEMALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 남성+재능"), rightLabel: lbl(R+": 여성+노력"), setName: "S4_test", nTrials: N_S4, conditionTag: "A" }));
 
-  // S5: Female/Male (Switch)
-  timeline.push(instructions(`<p><b>전환 연습</b></p><p>${lbl(L+": 여성")} / ${lbl(R+": 남성")}</p>`, "S5_inst"));
+  // 5세트: Female/Male (Switch)
+  timeline.push(instructions(`${progress(5)}<p><b>5세트</b></p><p>${lbl(L+": 여성")} / ${lbl(R+": 남성")}</p>`, "S5_inst"));
   timeline.push(buildSimpleSet({ leftStim: STIM_FEMALE, rightStim: STIM_MALE, leftLabel: lbl(L+": 여성"), rightLabel: lbl(R+": 남성"), setName: "S5_switch", nTrials: N_S5, leftClass: "female", rightClass: "male" }));
 
-  // S6, S7: Female+Talent / Male+Effort
-  timeline.push(instructions(`<p><b>결합 과제 (2/2)</b></p><p>${lbl(L+": 여성 + 재능")} / ${lbl(R+": 남성 + 노력")}</p>`, "S6_inst"));
+  // 6세트: Female+Talent / Male+Effort (연습)
+  timeline.push(instructions(`${progress(6)}<p><b>6세트</b></p><p>${lbl(L+": 여성 + 재능")} / ${lbl(R+": 남성 + 노력")}</p>`, "S6_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_FEMALE, rightTargets: STIM_MALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 여성+재능"), rightLabel: lbl(R+": 남성+노력"), setName: "S6_prac", nTrials: N_S6, conditionTag: "B" }));
+
+  // 7세트: Female+Talent / Male+Effort (본 과제)
+  timeline.push(instructions(`${progress(7)}<p><b>7세트</b></p><p>${lbl(L+": 여성 + 재능")} / ${lbl(R+": 남성 + 노력")}</p>`, "S7_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_FEMALE, rightTargets: STIM_MALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 여성+재능"), rightLabel: lbl(R+": 남성+노력"), setName: "S7_test", nTrials: N_S7, conditionTag: "B" }));
 }
 
 function append_B_first() {
-  // S1: Female/Male (B조건: 여성 먼저 시작)
-  timeline.push(instructions(`<p><b>연습 1</b></p><p>${lbl(L+": 여성")} / ${lbl(R+": 남성")}</p>`, "S1_inst"));
+  // 1세트: Female/Male (B조건: 여성 먼저 시작)
+  timeline.push(instructions(`${progress(1)}<p><b>1세트</b></p><p>${lbl(L+": 여성")} / ${lbl(R+": 남성")}</p>`, "S1_inst"));
   timeline.push(buildSimpleSet({ leftStim: STIM_FEMALE, rightStim: STIM_MALE, leftLabel: lbl(L+": 여성"), rightLabel: lbl(R+": 남성"), setName: "S1_gen_prac", nTrials: N_S1, leftClass: "female", rightClass: "male" }));
 
-  timeline.push(S2_inst, S2);
+  // 2세트: Talent/Effort
+  timeline.push(instructions(`${progress(2)}<p><b>2세트</b></p><p>${lbl(L+": 재능")} / ${lbl(R+": 노력")}</p>`, "S2_inst"));
+  timeline.push(S2);
 
-  // S3, S4: Female+Talent / Male+Effort (B조건 먼저)
-  timeline.push(instructions(`<p><b>결합 과제 (1/2)</b></p><p>${lbl(L+": 여성 + 재능")} / ${lbl(R+": 남성 + 노력")}</p>`, "S3_inst"));
+  // 3세트: Female+Talent / Male+Effort (연습, B조건 먼저)
+  timeline.push(instructions(`${progress(3)}<p><b>3세트</b></p><p>${lbl(L+": 여성 + 재능")} / ${lbl(R+": 남성 + 노력")}</p>`, "S3_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_FEMALE, rightTargets: STIM_MALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 여성+재능"), rightLabel: lbl(R+": 남성+노력"), setName: "S3_prac", nTrials: N_S3, conditionTag: "B" }));
+
+  // 4세트: Female+Talent / Male+Effort (본 과제)
+  timeline.push(instructions(`${progress(4)}<p><b>4세트</b></p><p>${lbl(L+": 여성 + 재능")} / ${lbl(R+": 남성 + 노력")}</p>`, "S4_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_FEMALE, rightTargets: STIM_MALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 여성+재능"), rightLabel: lbl(R+": 남성+노력"), setName: "S4_test", nTrials: N_S4, conditionTag: "B" }));
 
-  // S5: Male/Female (Switch)
-  timeline.push(instructions(`<p><b>전환 연습</b></p><p>${lbl(L+": 남성")} / ${lbl(R+": 여성")}</p>`, "S5_inst"));
+  // 5세트: Male/Female (Switch)
+  timeline.push(instructions(`${progress(5)}<p><b>5세트</b></p><p>${lbl(L+": 남성")} / ${lbl(R+": 여성")}</p>`, "S5_inst"));
   timeline.push(buildSimpleSet({ leftStim: STIM_MALE, rightStim: STIM_FEMALE, leftLabel: lbl(L+": 남성"), rightLabel: lbl(R+": 여성"), setName: "S5_switch", nTrials: N_S5, leftClass: "male", rightClass: "female" }));
 
-  // S6, S7: Male+Talent / Female+Effort (A조건)
-  timeline.push(instructions(`<p><b>결합 과제 (2/2)</b></p><p>${lbl(L+": 남성 + 재능")} / ${lbl(R+": 여성 + 노력")}</p>`, "S6_inst"));
+  // 6세트: Male+Talent / Female+Effort (연습, A조건)
+  timeline.push(instructions(`${progress(6)}<p><b>6세트</b></p><p>${lbl(L+": 남성 + 재능")} / ${lbl(R+": 여성 + 노력")}</p>`, "S6_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_MALE, rightTargets: STIM_FEMALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 남성+재능"), rightLabel: lbl(R+": 여성+노력"), setName: "S6_prac", nTrials: N_S6, conditionTag: "A" }));
+
+  // 7세트: Male+Talent / Female+Effort (본 과제)
+  timeline.push(instructions(`${progress(7)}<p><b>7세트</b></p><p>${lbl(L+": 남성 + 재능")} / ${lbl(R+": 여성 + 노력")}</p>`, "S7_inst"));
   timeline.push(buildCombinedSet({ leftTargets: STIM_MALE, rightTargets: STIM_FEMALE, leftAttrs: STIM_TALENT, rightAttrs: STIM_EFFORT, leftLabel: lbl(L+": 남성+재능"), rightLabel: lbl(R+": 여성+노력"), setName: "S7_test", nTrials: N_S7, conditionTag: "A" }));
 }
 
