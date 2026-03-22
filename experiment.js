@@ -16,11 +16,9 @@ const jsPsych = initJsPsych({
       .then(res => res.text())
       .then(text => {
         console.log("데이터 전송 완료:", text);
-        jsPsych.data.displayData("json");
       })
       .catch(err => {
         console.error("데이터 전송 실패:", err);
-        jsPsych.data.displayData("json");
       });
   }
 });
@@ -31,20 +29,20 @@ const KEYS = { left: "e", right: "i" };
 const STIM_MALE = ["남자", "남성"];
 const STIM_FEMALE = ["여자", "여성"];
 const STIM_TALENT = ["재능", "타고난", "천부적", "선천적", "소질"];
-const STIM_EFFORT = ["노력", "연습", "훈련", "학습", "연마"];
+const STIM_EFFORT = ["노력", "연습", "인내", "학습", "연마"];
 
 const N_S1 = 20; const N_S2 = 20; const N_S3 = 20; const N_S4 = 56;
 const N_S5 = 20; const N_S6 = 20; const N_S7 = 56;
 
 // ---------- Helpers ----------
-function instructions(html, name) {
+function instructions(html, name, buttonText = "스페이스바를 눌러 시작하세요") {
   return {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
       <div style="max-width:820px;margin:40px auto;font-size:18px;line-height:1.7;">${html}</div>
       <div style="position:fixed;bottom:40px;left:0;right:0;text-align:center;">
         <span style="font-size:20px;font-weight:bold;color:#1a237e;background:#e8eaf6;padding:12px 32px;border-radius:8px;border:2px solid #1a237e;letter-spacing:0.5px;">
-          ▼ &nbsp; 스페이스바를 눌러 시작하세요 &nbsp; ▼
+          ▼ &nbsp; ${buttonText} &nbsp; ▼
         </span>
       </div>
     `,
@@ -230,10 +228,12 @@ timeline.push({
   data: { task: "instructions", name: "consent" }
 });
 
-// 0. Intro
+// 0. Intro (IAT 전체 안내)
 timeline.push(instructions(`
-  <p><b>분류 과제 안내</b></p>
-  <p>키보드 <b>${L}</b>(왼쪽)과 <b>${R}</b>(오른쪽)을 사용합니다.</p>
+  <p><b>단어 분류 과제 안내</b></p>
+  <p>지금부터 단어 분류 과제를 시작합니다.</p>
+  <p>화면 중앙에 단어가 하나씩 나타나면, 왼쪽 범주에 해당하면 <b>${L}키</b>, 오른쪽 범주에 해당하면 <b>${R}키</b>를 최대한 빠르고 정확하게 눌러주세요.</p>
+  <p>틀렸을 경우 X 표시가 나타나며 정답 키를 눌러야 다음으로 넘어갑니다.</p>
 `, "intro"));
 
 // 공통 연습 2 (재능/노력) - 세트 번호는 각 조건 함수 안에서 push
@@ -477,8 +477,9 @@ timeline.push(ageEduMajor);
 
 // 종료 안내
 timeline.push(instructions(
-  `<p>모든 과제가 완료되었습니다.</p><p>참여해 주셔서 감사합니다.</p>`, 
-  "end"
+  `<p>모든 과제가 완료되었습니다.</p><p>참여해 주셔서 감사합니다.</p><p>보상은 입력하신 연락처로 지급될 예정입니다.</p>`,
+  "end",
+  "스페이스바를 눌러 종료해주세요"
 ));
 
 // 실행
