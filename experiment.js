@@ -419,14 +419,14 @@ const genderQ = {
     {
       prompt: "귀하의 성별은 무엇입니까?",
       name: "gender",
-      options: ["남성", "여성"],
+      options: ["남성", "여성", "논바이너리", "그 외 기타"],
       required: true
     }
   ],
   data: { scale: "demographics" }
 };
 
-const ageEduMajor = {
+const ageQ = {
   type: jsPsychSurveyText,
   preamble: `<p style="font-size:18px;line-height:1.6;"><b>[인구통계]</b> 아래 질문에 답해 주세요.</p>`,
   questions: [
@@ -434,46 +434,96 @@ const ageEduMajor = {
       prompt: "귀하의 나이는 몇 살입니까? (숫자만 입력)",
       name: "age",
       required: true
-    },
-    {
-      prompt: "귀하의 최종 학력은 무엇입니까?",
-      name: "education",
-      required: true
-    },
-    {
-      prompt: "귀하의 전공은 무엇입니까? (해당 시)",
-      name: "major",
-      required: false
     }
   ],
   data: { scale: "demographics" }
 };
 
-// 전공을 객관식으로도 받을 거면(네 IRB 문건 스타일) 아래 블록으로 대체 가능:
-// const majorCategory = {
-//   type: jsPsychSurveyMultiChoice,
-//   questions: [{
-//     prompt: "귀하의 전공은 무엇입니까?",
-//     name: "major_category",
-//     options: [
-//       "이공계열(기계공학, 토목공학 등)",
-//       "자연과학계열(물리, 수학 등)",
-//       "상경계열(경제, 경영 등)",
-//       "인문계열(철학, 영어 등)",
-//       "사회과학계열(심리학, 사회학 등)",
-//       "예체능계열(작곡, 체육 등)",
-//       "그 외 기타"
-//     ],
-//     required: true
-//   }],
-//   data: { scale: "demographics" }
-// };
+const educationQ = {
+  type: jsPsychSurveyMultiChoice,
+  preamble: `<p style="font-size:18px;line-height:1.6;"><b>[인구통계]</b> 아래 질문에 답해 주세요.</p>`,
+  questions: [
+    {
+      prompt: "귀하의 최종 학력은 무엇입니까?",
+      name: "education",
+      options: [
+        "초등학교 졸업",
+        "중학교 졸업",
+        "고등학교 졸업",
+        "2년제 대학 재학",
+        "학사(2년제 대학)",
+        "4년제 대학 재학",
+        "학사(4년제 대학)",
+        "대학원 재학 중",
+        "석사·박사",
+        "그 외 기타"
+      ],
+      required: true
+    }
+  ],
+  data: { scale: "demographics" }
+};
+
+const majorQ = {
+  type: jsPsychSurveyMultiChoice,
+  preamble: `<p style="font-size:18px;line-height:1.6;"><b>[인구통계]</b> 아래 질문에 답해 주세요.</p>`,
+  questions: [
+    {
+      prompt: "귀하의 전공은 무엇입니까?",
+      name: "major",
+      options: [
+        "이공계열(기계공학, 토목공학 등)",
+        "자연과학계열(물리, 수학 등)",
+        "상경계열(경제, 경영 등)",
+        "인문계열(철학, 영어 등)",
+        "사회과학계열(심리학, 사회학 등)",
+        "예체능계열(작곡, 체육 등)",
+        "그 외 기타"
+      ],
+      required: true
+    }
+  ],
+  data: { scale: "demographics" }
+};
+
+// ---------- URL 파라미터 기반 마지막 문항 ----------
+const urlParams = new URLSearchParams(window.location.search);
+const participantType = urlParams.get("type") || "student";
+
+const lastQ = participantType === "public"
+  ? {
+      type: jsPsychSurveyText,
+      preamble: `<p style="font-size:18px;line-height:1.6;"><b>[인구통계]</b> 아래 질문에 답해 주세요.</p>`,
+      questions: [
+        {
+          prompt: "귀하의 휴대폰 번호를 입력해주세요. (보상 지급 목적으로 수집됩니다. 단, 답변하지 않으시는 경우 보상은 지급되지 않습니다.)",
+          name: "phone",
+          required: false
+        }
+      ],
+      data: { scale: "demographics" }
+    }
+  : {
+      type: jsPsychSurveyText,
+      preamble: `<p style="font-size:18px;line-height:1.6;"><b>[인구통계]</b> 아래 질문에 답해 주세요.</p>`,
+      questions: [
+        {
+          prompt: "귀하의 학번은 무엇입니까? (보상 지급 목적으로 수집됩니다. 단, 답변하지 않으시는 경우 보상은 지급되지 않습니다.)",
+          name: "student_id",
+          required: false
+        }
+      ],
+      data: { scale: "demographics" }
+    };
 
 // ---------- Add to timeline (IAT 이후) ----------
 timeline.push(modernSexismBlock);
 timeline.push(genderEssentialismBlock);
 timeline.push(genderQ);
-timeline.push(ageEduMajor);
+timeline.push(ageQ);
+timeline.push(educationQ);
+timeline.push(majorQ);
+timeline.push(lastQ);
 
 // 종료 안내
 timeline.push(instructions(
