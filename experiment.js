@@ -351,7 +351,7 @@ function likertItem({ item_id, prompt, scale, reverse = false }) {
 const MSS_ITEMS = [
   {
     item_id: "mss01",
-    prompt: "미국 사회에서는 여성에 대한 차별이 더 이상 문제가 아니다.",
+    prompt: "한국 사회에서는 여성에 대한 차별이 더 이상 문제가 아니다.",
     reverse: false
   },
   {
@@ -395,6 +395,7 @@ const modernSexismBlock = {
   type: jsPsychSurveyLikert,
   preamble: `<p style="font-size:18px;line-height:1.6;"><b>[설문 1]</b> 아래 문장에 대해 얼마나 동의하는지 선택해 주세요.</p>`,
   questions: MSS_ITEMS.map(it => likertItem({ item_id: it.item_id, prompt: it.prompt, scale: "modern_sexism", reverse: it.reverse })),
+  button_label: "다음 페이지",
   data: {
     scale: "modern_sexism",
     // reverse key 맵을 통째로 남겨두면 나중에 점수계산할 때 편함
@@ -423,6 +424,7 @@ const genderEssentialismBlock = {
   type: jsPsychSurveyLikert,
   preamble: `<p style="font-size:18px;line-height:1.6;"><b>[설문 2]</b> 아래 문장에 대해 얼마나 동의하는지 선택해 주세요.</p>`,
   questions: GES_10.map(it => likertItem({ item_id: it.item_id, prompt: it.prompt, scale: "gender_essentialism", reverse: it.reverse })),
+  button_label: "다음 페이지",
   data: {
     scale: "gender_essentialism",
     reverse_key: Object.fromEntries(GES_10.map(it => [it.item_id, it.reverse]))
@@ -441,6 +443,7 @@ const genderQ = {
       required: true
     }
   ],
+  button_label: "다음 페이지",
   data: { scale: "demographics" }
 };
 
@@ -454,6 +457,7 @@ const ageQ = {
       required: true
     }
   ],
+  button_label: "다음 페이지",
   data: { scale: "demographics" }
 };
 
@@ -479,6 +483,7 @@ const educationQ = {
       required: true
     }
   ],
+  button_label: "다음 페이지",
   data: { scale: "demographics" }
 };
 
@@ -501,6 +506,7 @@ const majorQ = {
       required: true
     }
   ],
+  button_label: "다음 페이지",
   data: { scale: "demographics" }
 };
 
@@ -519,6 +525,7 @@ const lastQ = participantType === "public"
           required: false
         }
       ],
+      button_label: "다음 페이지",
       data: { scale: "demographics" }
     }
   : {
@@ -531,6 +538,7 @@ const lastQ = participantType === "public"
           required: false
         }
       ],
+      button_label: "다음 페이지",
       data: { scale: "demographics" }
     };
 
