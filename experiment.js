@@ -30,7 +30,7 @@ const KEYS = { left: "e", right: "i" };
 const STIM_MALE = ["남자", "남성"];
 const STIM_FEMALE = ["여자", "여성"];
 const STIM_TALENT = ["재능", "타고난", "천부적", "선천적", "소질"];
-const STIM_EFFORT = ["노력", "연습", "인내", "학습", "연마"];
+const STIM_EFFORT = ["노력", "연습", "훈련", "학습", "끈기"];
 
 const N_S1 = 20; const N_S2 = 20; const N_S3 = 20; const N_S4 = 56;
 const N_S5 = 20; const N_S6 = 20; const N_S7 = 56;
