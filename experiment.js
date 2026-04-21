@@ -5,22 +5,41 @@
 // ---------- jsPsych init ----------
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwuCzFEG_PBGmBBk2FNDP0IxWA8H8bzk4Xg0-k5AVuVHuSWe7PuKi7h6mUyG3fnnAHA/exec";
 
+const participantId = window.crypto && typeof window.crypto.randomUUID === "function"
+  ? window.crypto.randomUUID()
+  : `p_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+function buildSubmissionPayload() {
+  return {
+    participant_id: participantId,
+    submitted_at: new Date().toISOString(),
+    participant_type: new URLSearchParams(window.location.search).get("type") || "student",
+    user_agent: navigator.userAgent,
+    trials: jsPsych.data.get().values()
+  };
+}
+
+async function submitDataToGoogleSheet() {
+  const response = await fetch(GOOGLE_SHEET_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(buildSubmissionPayload())
+  });
+
+  // no-cors 응답은 opaque라서 본문/상태 코드를 읽을 수 없습니다.
+  // 여기까지 왔다는 것은 브라우저가 요청을 보냈다는 뜻입니다.
+  console.log("Google Sheet submission request sent:", response.type);
+}
+
 const jsPsych = initJsPsych({
   on_finish: () => {
-    const allData = jsPsych.data.get().values();
-    fetch(GOOGLE_SHEET_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(allData)
-    })
-      .then(res => res.text())
-      .then(text => {
-        console.log("데이터 전송 완료:", text);
-      })
-      .catch(err => {
-        console.error("데이터 전송 실패:", err);
-      });
+    submitDataToGoogleSheet().catch(err => {
+      console.error("Google Sheet submission failed:", err);
+      jsPsych.data.get().localSave("json", `iat_backup_${participantId}.json`);
+    });
   }
 });
 
