@@ -80,14 +80,14 @@ function instructions(html, name, buttonText = "스페이스바를 눌러 시작
 
 function makeTrial({ stimulus, correct_response, left_label, right_label, setName, stim_class }) {
   const stimHtml = (showX) => `
-    <div style="position:fixed;top:20px;left:0;right:0;display:flex;justify-content:center;pointer-events:none;">
-      <div style="width:100%;max-width:900px;display:flex;justify-content:space-between;padding:0 40px;box-sizing:border-box;font-size:18px;">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh;max-width:900px;margin:0 auto;">
+      <div style="width:100%;display:flex;justify-content:space-between;padding:0 40px;box-sizing:border-box;font-size:18px;margin-bottom:48px;">
         <div>${left_label}</div>
         <div>${right_label}</div>
       </div>
+      <div class="iat-stimulus" style="font-size:42px;text-align:center;">${stimulus}</div>
+      ${showX ? '<div style="font-size:56px;color:#b00020;text-align:center;margin-top:10px;">X</div>' : ''}
     </div>
-    <div class="iat-stimulus" style="margin-top:70px;font-size:42px;text-align:center;">${stimulus}</div>
-    ${showX ? '<div style="font-size:56px;color:#b00020;text-align:center;margin-top:10px;">X</div>' : ''}
   `;
 
   // 1차 시도: 자극 표시, E/I 모두 수용
