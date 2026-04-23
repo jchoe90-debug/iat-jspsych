@@ -81,7 +81,7 @@ function instructions(html, name, buttonText = "스페이스바를 눌러 시작
 function makeTrial({ stimulus, correct_response, left_label, right_label, setName, stim_class }) {
   const stimHtml = (showX) => `
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh;max-width:900px;margin:0 auto;">
-      <div style="width:100%;display:flex;justify-content:space-between;padding:0 40px;box-sizing:border-box;font-size:18px;margin-bottom:48px;">
+      <div style="width:300px;display:flex;justify-content:space-between;font-size:18px;margin-bottom:48px;">
         <div>${left_label}</div>
         <div>${right_label}</div>
       </div>
