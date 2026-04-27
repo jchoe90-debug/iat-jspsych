@@ -235,7 +235,7 @@ timeline.push({
 
       <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">10. 동의 및 철회 절차</h3>
       <p style="margin:0 0 10px;">귀하는 이 연구에 참여에 동의하지 않더라도 불이익을 받지 않으며 참여해야 할 의무는 없습니다. 또한 연구참여에 동의한 경우라도 자유의사에 의하여 언제든지 이를 철회할 수 있습니다. 귀하가 이 연구에 참여를 중단하길 원하면 언제나 참여를 철회할 수 있고 그 어떠한 불이익이 없을 것입니다.</p>
-      <p style="margin:0 0 10px;">만약 귀하가 연구 참여 동의를 철회하는 경우, 연구책임자 <b>최지영(010-5221-3942)</b>에게 연락하여 주십시오. 철회 시 귀하에게 수집된 모든 데이터는 즉시 파기됩니다. 단, 설문을 완료하였으나 개인식별정보를 입력하지 않으신 경우 데이터 삭제가 어려울 수 있습니다.</p>
+      <p style="margin:0 0 10px;">만약 귀하가 연구 참여 동의를 철회하는 경우, 연구책임자 <b>최지영(jchoe90@ewhain.net)</b>에게 연락하여 주십시오. 철회 시 귀하에게 수집된 모든 데이터는 즉시 파기됩니다. 단, 설문을 완료하였으나 개인식별정보를 입력하지 않으신 경우 데이터 삭제가 어려울 수 있습니다.</p>
 
       <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">11. 개인정보 수집 및 보호</h3>
       <p style="margin:0 0 10px;">본 연구에서 수집하는 개인식별정보는 이름과 연락처입니다. 수집된 개인식별정보는 잠금장치가 있는 USB에 보관되며 연구책임자 최지영만이 접근할 수 있습니다. 수집된 개인식별정보는 연구 참여에 대한 보상 지급 목적으로만 사용됩니다. 연구관련 자료는 「생명윤리 및 안전에 관한 법률」 시행규칙 제15조에 따라 연구종료 후 3년간 보관 후 파기됩니다. 귀하의 신상을 파악할 수 있는 기록은 연구 결과 출판 시에도 비밀로 보호됩니다.</p>
@@ -246,7 +246,7 @@ timeline.push({
           <td style="padding:8px 12px;border:1px solid #ccc;"><b>연구책임자</b></td>
           <td style="padding:8px 12px;border:1px solid #ccc;">최지영</td>
           <td style="padding:8px 12px;border:1px solid #ccc;"><b>연락처</b></td>
-          <td style="padding:8px 12px;border:1px solid #ccc;">010-5221-3942</td>
+          <td style="padding:8px 12px;border:1px solid #ccc;">jchoe90@ewhain.net</td>
         </tr>
         <tr>
           <td colspan="4" style="padding:8px 12px;border:1px solid #ccc;">
@@ -587,7 +587,7 @@ timeline.push(instructions(
     <p>IAT는 연구 목적을 미리 알 경우 참여자가 의도적으로 반응을 조절할 수 있어, 암묵적(무의식적) 연합을 정확히 측정하기 어렵습니다. 연구의 타당성을 위해 부득이하게 실제 목적을 사전에 공개하지 않았습니다.</p>
 
     <h3>데이터 처리</h3>
-    <p>수집된 데이터는 익명으로 처리되며, 연구 목적 외에는 사용되지 않습니다. 참여를 원치 않으시는 경우 연구책임자(010-5221-3942)에게 연락하시면 데이터를 삭제해 드립니다.</p>
+    <p>수집된 데이터는 익명으로 처리되며, 연구 목적 외에는 사용되지 않습니다. 참여를 원치 않으시는 경우 연구책임자(jchoe90@ewhain.net)에게 연락하시면 데이터를 삭제해 드립니다.</p>
 
     <div class="consent-box" style="margin-top:20px;">
       Extra credit 관련 사항은 추후 강의 시간에 안내될 예정입니다.
