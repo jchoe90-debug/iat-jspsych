@@ -1,5 +1,7 @@
 const PARTICIPANTS_SHEET_NAME = "Participants";
 const TRIALS_SHEET_NAME = "Trials";
+const EXTERNAL_PARTICIPANTS_SHEET_NAME = "External_Participants";
+const EXTERNAL_TRIALS_SHEET_NAME = "External_Trials";
 
 const PARTICIPANT_BASE_COLUMNS = [
   "participant_id",
@@ -36,10 +38,11 @@ function doPost(e) {
 
     const payload = JSON.parse(e.postData.contents);
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const participantSheet = spreadsheet.getSheetByName(PARTICIPANTS_SHEET_NAME) ||
-      spreadsheet.insertSheet(PARTICIPANTS_SHEET_NAME);
-    const trialsSheet = spreadsheet.getSheetByName(TRIALS_SHEET_NAME) ||
-      spreadsheet.insertSheet(TRIALS_SHEET_NAME);
+    const sheetNames = getSheetNamesForPayload(payload);
+    const participantSheet = spreadsheet.getSheetByName(sheetNames.participants) ||
+      spreadsheet.insertSheet(sheetNames.participants);
+    const trialsSheet = spreadsheet.getSheetByName(sheetNames.trials) ||
+      spreadsheet.insertSheet(sheetNames.trials);
 
     appendParticipantRow(participantSheet, payload);
     appendTrialRows(trialsSheet, payload);
@@ -48,6 +51,20 @@ function doPost(e) {
   } catch (error) {
     return jsonResponse({ ok: false, error: String(error && error.message ? error.message : error) });
   }
+}
+
+function getSheetNamesForPayload(payload) {
+  if (payload && payload.participant_type === "external") {
+    return {
+      participants: EXTERNAL_PARTICIPANTS_SHEET_NAME,
+      trials: EXTERNAL_TRIALS_SHEET_NAME
+    };
+  }
+
+  return {
+    participants: PARTICIPANTS_SHEET_NAME,
+    trials: TRIALS_SHEET_NAME
+  };
 }
 
 function appendParticipantRow(sheet, payload) {
