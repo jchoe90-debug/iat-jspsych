@@ -231,14 +231,14 @@ timeline.push({
       <p style="margin:0 0 10px;">귀하가 이 연구에 참여하는데 있어서 직접적인 이득은 없습니다. 그러나 귀하가 제공하는 정보는 한국 사회에 대한 이해를 증진하는데 도움이 될 것입니다.</p>
 
       <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">9. 연구 참여에 따른 보상</h3>
-      <p style="margin:0 0 10px;">본 조사는 외부 조사 업체를 통해 진행됩니다. 연구진은 본 설문 페이지에서 보상 지급을 위한 이름, 연락처, 학번 등 개인식별정보를 수집하지 않습니다. 조사 참여에 따른 보상 또는 참여 조건은 조사 업체의 안내에 따릅니다.</p>
+      <p style="margin:0 0 10px;">이 연구에 끝까지 참여해 주시는 경우, 참여에 대한 감사의 의미로 <b>소정의 사례</b>가 지급될 예정입니다. 사례 지급을 위해 설문 마지막에 휴대폰 번호 또는 이메일 주소를 수집합니다. 설문을 도중에 종료하시거나 사례 발송을 위한 연락처를 입력하지 않으신 경우 사례 지급이 어려울 수 있습니다.</p>
 
       <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">10. 동의 및 철회 절차</h3>
       <p style="margin:0 0 10px;">귀하는 이 연구에 참여에 동의하지 않더라도 불이익을 받지 않으며 참여해야 할 의무는 없습니다. 또한 연구참여에 동의한 경우라도 자유의사에 의하여 언제든지 이를 철회할 수 있습니다. 귀하가 이 연구에 참여를 중단하길 원하면 언제나 참여를 철회할 수 있고 그 어떠한 불이익이 없을 것입니다.</p>
-      <p style="margin:0 0 10px;">만약 귀하가 연구 참여 동의를 철회하는 경우, 연구책임자 <b>최지영(jchoe90@ewhain.net)</b>에게 연락하여 주십시오. 철회 시 확인 가능한 범위 내에서 귀하의 자료는 연구 절차에 따라 처리됩니다. 본 설문 페이지는 이름, 연락처, 학번 등 개인식별정보를 수집하지 않으므로, 설문 완료 후에는 개별 응답을 특정하여 삭제하는 데 제한이 있을 수 있습니다.</p>
+      <p style="margin:0 0 10px;">만약 귀하가 연구 참여 동의를 철회하는 경우, 연구책임자 <b>최지영(jchoe90@ewhain.net)</b>에게 연락하여 주십시오. 철회 시 확인 가능한 범위 내에서 귀하의 자료는 연구 절차에 따라 처리됩니다. 사례 지급을 위한 연락처를 입력하지 않으신 경우, 설문 완료 후에는 개별 응답을 특정하여 삭제하는 데 제한이 있을 수 있습니다.</p>
 
       <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">11. 개인정보 수집 및 보호</h3>
-      <p style="margin:0 0 10px;">본 설문 페이지에서는 이름, 연락처, 학번 등 개인식별정보를 수집하지 않습니다. 연구자료는 익명 응답자료 형태로 수집되며, 연구관련 자료는 「생명윤리 및 안전에 관한 법률」 시행규칙 제15조에 따라 연구종료 후 3년간 보관 후 파기됩니다. 연구 결과는 개인을 식별할 수 없는 형태로만 보고됩니다.</p>
+      <p style="margin:0 0 10px;">본 설문 페이지에서는 사례 지급을 위해 휴대폰 번호 또는 이메일 주소를 수집합니다. 수집된 연락처는 사례 지급 목적으로만 사용되며 연구책임자 최지영만이 접근할 수 있습니다. 연구자료는 연구관련 자료와 함께 「생명윤리 및 안전에 관한 법률」 시행규칙 제15조에 따라 연구종료 후 3년간 보관 후 파기됩니다. 연구 결과는 개인을 식별할 수 없는 형태로만 보고됩니다.</p>
 
       <h3 style="color:#1a237e;font-size:17px;margin:18px 0 6px;">12. 문의처</h3>
       <table style="width:100%;border-collapse:collapse;font-size:16px;margin-bottom:8px;">
@@ -529,6 +529,20 @@ const majorQ = {
   data: { scale: "demographics" }
 };
 
+const rewardContactQ = {
+  type: jsPsychSurveyText,
+  preamble: `<p style="font-size:18px;line-height:1.6;"><b>[사례 지급 정보]</b> 아래 질문에 답해 주세요.</p>`,
+  questions: [
+    {
+      prompt: "사례 지급을 받을 휴대폰 번호 또는 이메일 주소를 입력해 주세요. (사례 지급 목적으로만 사용됩니다.)",
+      name: "reward_contact",
+      required: false
+    }
+  ],
+  button_label: "다음 페이지",
+  data: { scale: "reward_contact" }
+};
+
 // ---------- Add to timeline (IAT 이후) ----------
 timeline.push(modernSexismBlock);
 timeline.push(genderEssentialismBlock);
@@ -536,6 +550,7 @@ timeline.push(genderQ);
 timeline.push(ageQ);
 timeline.push(educationQ);
 timeline.push(majorQ);
+timeline.push(rewardContactQ);
 
 // 종료 안내 (디브리핑 포함)
 timeline.push(instructions(
@@ -554,7 +569,7 @@ timeline.push(instructions(
     <p>IAT는 연구 목적을 미리 알 경우 참여자가 의도적으로 반응을 조절할 수 있어, 암묵적(무의식적) 연합을 정확히 측정하기 어렵습니다. 연구의 타당성을 위해 부득이하게 실제 목적을 사전에 공개하지 않았습니다.</p>
 
     <h3>데이터 처리</h3>
-    <p>수집된 데이터는 익명으로 처리되며, 연구 목적 외에는 사용되지 않습니다. 참여 철회를 원하시는 경우 연구책임자(jchoe90@ewhain.net)에게 연락해 주십시오. 다만 본 설문 페이지는 이름, 연락처, 학번 등 개인식별정보를 수집하지 않으므로, 설문 완료 후에는 개별 응답을 특정하여 삭제하는 데 제한이 있을 수 있습니다.</p>
+    <p>수집된 데이터는 연구 목적 외에는 사용되지 않습니다. 사례 지급을 위해 입력하신 연락처는 사례 지급 목적으로만 사용됩니다. 참여 철회를 원하시는 경우 연구책임자(jchoe90@ewhain.net)에게 연락해 주십시오.</p>
   </div>`,
   "end",
   "스페이스바를 눌러 종료해주세요"
